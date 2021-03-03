@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState} from 'react';
+import axios from 'axios';
 import SearchBar from './components/searchBar/SearchBar';
 import TabBarMenu from './components/tabBarMenu/TabBarMenu';
 import MetricSlider from './components/metricSlider/MetricSlider';
@@ -7,38 +8,55 @@ import './App.css';
 const apiKey = "8ede14718d39d8e9ca1aacb5a13cfde7";
 
 function App() {
-  return (
-    <>
-      <div className="weather-container">
+    const [weatherData, setWeatherData] = useState(null);
 
-        {/*HEADER -------------------- */}
-        <div className="weather-header">
-          <SearchBar/>
+    async function fetchData() {
+        try {
+            const result = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=utrecht,nl&appid=${apiKey}&lang=nl`);
+            setWeatherData(result.data);
+        } catch (e) {
+            console.error(e);
+        }
+    }
 
-          <span className="location-details">
-            <h2>Bewolkt</h2>
-            <h3> </h3>
-            <h1>14 &deg;</h1>
+    return (
+        <>
+            <div className="weather-container">
 
-            <button type="button">
+                {/*HEADER -------------------- */}
+                <div className="weather-header">
+                    <SearchBar/>
+
+                    <span className="location-details">
+            {weatherData &&
+            <>
+                <h2>{weatherData.weather[0].description}</h2>
+                <h3>{weatherData.name}</h3>
+                <h1>{weatherData.main.temp}</h1>
+            </>
+            }
+                        <button
+                            type="button"
+                            onClick={fetchData}
+                        >
               Haal data op!
             </button>
           </span>
-        </div>
+                </div>
 
-        {/*CONTENT ------------------ */}
-        <div className="weather-content">
-          <TabBarMenu/>
+                {/*CONTENT ------------------ */}
+                <div className="weather-content">
+                    <TabBarMenu/>
 
-          <div className="tab-wrapper">
-            Alle inhoud van de tabbladen komt hier!
-          </div>
-        </div>
+                    <div className="tab-wrapper">
+                        Alle inhoud van de tabbladen komt hier!
+                    </div>
+                </div>
 
-        <MetricSlider/>
-      </div>
-    </>
-  );
+                <MetricSlider/>
+            </div>
+        </>
+    );
 }
 
 export default App;
