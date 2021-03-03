@@ -5,10 +5,11 @@ import TabBarMenu from './components/tabBarMenu/TabBarMenu';
 import MetricSlider from './components/metricSlider/MetricSlider';
 import './App.css';
 
-const apiKey = "8ede14718d39d8e9ca1aacb5a13cfde7";
+const apiKey = "";
 
 function App() {
     const [weatherData, setWeatherData] = useState(null);
+    const [location, setLocation] = useState('');
 
     async function fetchData() {
         try {
@@ -25,7 +26,7 @@ function App() {
 
                 {/*HEADER -------------------- */}
                 <div className="weather-header">
-                    <SearchBar/>
+                    <SearchBar setLocationHandler={setLocation} />
 
                     <span className="location-details">
             {weatherData &&
