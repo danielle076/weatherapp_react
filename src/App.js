@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import SearchBar from './components/searchBar/SearchBar';
 import TabBarMenu from './components/tabBarMenu/TabBarMenu';
@@ -11,14 +11,25 @@ function App() {
     const [weatherData, setWeatherData] = useState(null);
     const [location, setLocation] = useState('');
 
-    async function fetchData() {
-        try {
-            const result = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=utrecht,nl&appid=${apiKey}&lang=nl`);
-            setWeatherData(result.data);
-        } catch (e) {
-            console.error(e);
+    useEffect(() => {
+        // 1. We definiëren de functie
+        async function fetchData() {
+            try {
+                const result = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${location},nl&appid=${apiKey}&lang=nl`);
+                setWeatherData(result.data);
+            } catch (e) {
+                console.error(e);
+            }
         }
-    }
+
+        // 2. We roepen de functie aan als location is veranderd, maar niet null is
+        if (location) {
+            fetchData();
+        }
+
+        // Code wordt alleen afgevuurd als location veranderd
+    }, [location]);
+
 
     return (
         <>
@@ -26,7 +37,7 @@ function App() {
 
                 {/*HEADER -------------------- */}
                 <div className="weather-header">
-                    <SearchBar setLocationHandler={setLocation} />
+                    <SearchBar setLocationHandler={setLocation}/>
 
                     <span className="location-details">
             {weatherData &&
@@ -36,12 +47,7 @@ function App() {
                 <h1>{weatherData.main.temp}</h1>
             </>
             }
-                        <button
-                            type="button"
-                            onClick={fetchData}
-                        >
-              Haal data op!
-            </button>
+
           </span>
                 </div>
 
