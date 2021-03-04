@@ -6,7 +6,7 @@ import MetricSlider from './components/metricSlider/MetricSlider';
 import ForecastTab from './pages/forecastTab/ForecastTab';
 import './App.css';
 
-const apiKey = "8ede14718d39d8e9ca1aacb5a13cfde7";
+const apiKey = "";
 
 function App() {
     const [weatherData, setWeatherData] = useState(null);
