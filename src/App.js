@@ -1,12 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+} from 'react-router-dom';
 import SearchBar from './components/searchBar/SearchBar';
 import TabBarMenu from './components/tabBarMenu/TabBarMenu';
 import MetricSlider from './components/metricSlider/MetricSlider';
 import ForecastTab from './pages/forecastTab/ForecastTab';
 import './App.css';
+import TodayTab from "./pages/todayTab/TodayTab";
 
-const apiKey = "8ede14718d39d8e9ca1aacb5a13cfde7";
+const apiKey = "";
 
 function App() {
     const [weatherData, setWeatherData] = useState(null);
@@ -58,13 +64,22 @@ function App() {
                 </div>
 
                 {/*CONTENT ------------------ */}
-                <div className="weather-content">
-                    <TabBarMenu/>
+                <Router>
+                    <div className="weather-content">
+                        <TabBarMenu/>
 
-                    <div className="tab-wrapper">
-                        <ForecastTab coordinates={weatherData && weatherData.coord}/>
+                        <div className="tab-wrapper">
+                            <Switch>
+                                <Route exact path="/">
+                                    <TodayTab />
+                                </Route>
+                                <Route path="/komende-week">
+                                    <ForecastTab coordinates={weatherData && weatherData.coord}/>
+                                </Route>
+                            </Switch>
+                        </div>
                     </div>
-                </div>
+                </Router>
 
                 <MetricSlider/>
             </div>
