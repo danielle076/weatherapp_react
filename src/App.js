@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import SearchBar from './components/searchBar/SearchBar';
 import TabBarMenu from './components/tabBarMenu/TabBarMenu';
@@ -6,20 +6,23 @@ import MetricSlider from './components/metricSlider/MetricSlider';
 import ForecastTab from './pages/forecastTab/ForecastTab';
 import './App.css';
 
-const apiKey = "";
+const apiKey = "8ede14718d39d8e9ca1aacb5a13cfde7";
 
 function App() {
     const [weatherData, setWeatherData] = useState(null);
     const [location, setLocation] = useState('');
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         async function fetchData() {
+            setError(false)
             try {
                 const result = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${location},nl&appid=${apiKey}&lang=nl`);
                 setWeatherData(result.data);
-                console.log(result.data)
+                console.log(result.data);
             } catch (e) {
                 console.error(e);
+                setError(true);
             }
         }
 
@@ -35,7 +38,13 @@ function App() {
 
                 {/*HEADER -------------------- */}
                 <div className="weather-header">
-                    <SearchBar setLocationHandler={setLocation} />
+                    <SearchBar setLocationHandler={setLocation}/>
+
+                    {error && (
+                        <span className="wrong-location-error">
+              Oeps! Deze locatie bestaat niet
+            </span>
+                    )}
 
                     <span className="location-details">
             {weatherData &&
