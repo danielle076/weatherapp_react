@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
+import { TempContext } from './context/TempContextProvider';
 import axios from 'axios';
 import {
     BrowserRouter as Router,
@@ -17,6 +18,7 @@ function App() {
     const [weatherData, setWeatherData] = useState(null);
     const [location, setLocation] = useState('');
     const [error, setError] = useState(false);
+    const { kelvinToMetric } = useContext(TempContext);
 
     useEffect(() => {
         async function fetchData() {
@@ -56,7 +58,7 @@ function App() {
             <>
                 <h2>{weatherData.weather[0].description}</h2>
                 <h3>{weatherData.name}</h3>
-                <h1>{kelvinToCelcius(weatherData.main.temp)}</h1>
+                <h1>{kelvinToMetric(weatherData.main.temp)}</h1>
             </>
             }
           </span>
