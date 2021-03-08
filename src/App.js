@@ -13,8 +13,6 @@ import kelvinToCelcius from './helpers/kelvinToCelcius';
 import './App.css';
 import TodayTab from "./pages/todayTab/TodayTab";
 
-const apiKey = "";
-
 function App() {
     const [weatherData, setWeatherData] = useState(null);
     const [location, setLocation] = useState('');
@@ -24,7 +22,7 @@ function App() {
         async function fetchData() {
             setError(false)
             try {
-                const result = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${location},nl&appid=${apiKey}&lang=nl`);
+                const result = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${location},nl&appid=${process.env.REACT_APP_API_KEY}&lang=nl`);
                 setWeatherData(result.data);
                 console.log(result.data);
             } catch (e) {
